@@ -1,5 +1,10 @@
 # KinsenOPS Platform
 
+[![CI](https://github.com/kostasuser01gr/KinsenOPS-Platform/actions/workflows/ci.yml/badge.svg)](https://github.com/kostasuser01gr/KinsenOPS-Platform/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org)
+
 > Full-stack operations intelligence platform for fleet management, rental operations, and business analytics.
 
 Built with **Next.js 16**, **React 19**, **tRPC**, **Prisma**, and **Supabase** — deployed to Cloudflare Workers via OpenNext.
