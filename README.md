@@ -7,7 +7,7 @@
 
 > Full-stack operations intelligence platform for fleet management, rental operations, and business analytics.
 
-Built with **Next.js 16**, **React 19**, **tRPC**, **Prisma**, and **Supabase** — deployed to Cloudflare Workers via OpenNext.
+Built with **Next.js 16**, **React 19**, **tRPC**, **Prisma**, and **Supabase**. This repo is kept local-first; hosted deployment is optional and requires explicit approval before any platform state is changed.
 
 ---
 
@@ -40,8 +40,8 @@ Built with **Next.js 16**, **React 19**, **tRPC**, **Prisma**, and **Supabase** 
 
 **Infrastructure**
 - Supabase (Postgres + Auth + Storage)
-- Cloudflare Workers (via OpenNext + Wrangler)
-- Deployed with zero cold-starts on edge
+- Cloudflare Workers support via OpenNext + Wrangler
+- Local-only development by default
 
 ---
 
@@ -49,15 +49,15 @@ Built with **Next.js 16**, **React 19**, **tRPC**, **Prisma**, and **Supabase** 
 
 ### Prerequisites
 - Node.js 20+
-- pnpm
-- A Supabase project
+- npm
+- A local or separately approved Supabase-compatible Postgres database
 
 ### Setup
 
 ```bash
 git clone https://github.com/kostasuser01gr/KinsenOPS-Platform
 cd KinsenOPS-Platform
-pnpm install
+npm install
 cp .env.example .env.local
 ```
 
@@ -67,16 +67,23 @@ DATABASE_URL=your_supabase_postgres_connection_string
 DIRECT_URL=your_supabase_direct_url
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 AUTH_SECRET=your_nextauth_secret
 ```
 
 ```bash
-pnpm prisma generate
-pnpm prisma db push
-pnpm dev
+npx prisma generate
+npx prisma db push
+npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
+
+### Local-Only / Zero-Charge Mode
+
+Do not run deployment, linking, or platform secret commands unless you explicitly intend to change hosted platform state. In zero-charge mode, use only local commands such as `npm ci`, `npm run build`, `npm run cf:build`, and `npx tsc --noEmit`.
+
+`wrangler.jsonc` intentionally contains only non-secret defaults. Keep database URLs, Supabase keys, auth secrets, and platform tokens in local environment files or platform secret stores; never commit them to the repo.
 
 ---
 

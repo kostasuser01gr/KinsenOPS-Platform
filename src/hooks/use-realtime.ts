@@ -4,18 +4,19 @@ import { useEffect } from "react";
 import { createBrowserClient } from "@/lib/supabase";
 import { trpc } from "@/lib/trpc";
 
-const supabase = createBrowserClient();
-
 /** Subscribe to vehicle status changes and auto-refresh fleet queries */
 export function useRealtimeFleet() {
   const utils = trpc.useUtils();
 
   useEffect(() => {
+    const supabase = createBrowserClient();
+    if (!supabase) return;
+
     const channel = supabase
       .channel("fleet-changes")
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "Vehicle" },
+        { event: "*", schema: "public", table: "vehicles" },
         () => {
           utils.fleet.list.invalidate();
           utils.fleet.statusSummary.invalidate();
@@ -23,7 +24,7 @@ export function useRealtimeFleet() {
       )
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "VehicleStatusEvent" },
+        { event: "INSERT", schema: "public", table: "vehicle_status_history" },
         () => {
           utils.fleet.statusSummary.invalidate();
         }
@@ -39,11 +40,14 @@ export function useRealtimeTasks() {
   const utils = trpc.useUtils();
 
   useEffect(() => {
+    const supabase = createBrowserClient();
+    if (!supabase) return;
+
     const channel = supabase
       .channel("task-changes")
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "Task" },
+        { event: "*", schema: "public", table: "tasks" },
         () => {
           utils.task.list.invalidate();
         }
@@ -60,6 +64,8 @@ export function useRealtimeChat(channelId: string | null) {
 
   useEffect(() => {
     if (!channelId) return;
+    const supabase = createBrowserClient();
+    if (!supabase) return;
 
     const channel = supabase
       .channel(`chat-${channelId}`)
@@ -68,7 +74,7 @@ export function useRealtimeChat(channelId: string | null) {
         {
           event: "INSERT",
           schema: "public",
-          table: "ChatMessage",
+          table: "chat_messages",
           filter: `channelId=eq.${channelId}`,
         },
         () => {
@@ -86,11 +92,14 @@ export function useRealtimeIncidents() {
   const utils = trpc.useUtils();
 
   useEffect(() => {
+    const supabase = createBrowserClient();
+    if (!supabase) return;
+
     const channel = supabase
       .channel("incident-changes")
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "Incident" },
+        { event: "*", schema: "public", table: "incidents" },
         () => {
           utils.incident.list.invalidate();
         }
