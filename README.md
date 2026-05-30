@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KinsenOPS Platform
+
+> Full-stack operations intelligence platform for fleet management, rental operations, and business analytics.
+
+Built with **Next.js 16**, **React 19**, **tRPC**, **Prisma**, and **Supabase** — deployed to Cloudflare Workers via OpenNext.
+
+---
+
+## Features
+
+| Module | Description |
+|--------|-------------|
+| **Dashboard** | KPI overview, live metrics, activity feed |
+| **Fleet** | Vehicle inventory, status tracking, maintenance scheduling |
+| **Rentals** | Booking lifecycle, customer management, contract generation |
+| **Finance** | Revenue tracking, invoicing, expense reports |
+| **Analytics** | Charts, trend analysis, operational insights |
+| **Tasks** | Internal task management with priority queues |
+| **Incidents** | Incident reporting, escalation, audit trail |
+| **AI Chat** | Integrated assistant for query resolution |
+
+---
+
+## Tech Stack
+
+**Frontend**
+- Next.js 16 (App Router) · React 19 · TypeScript 5
+- Tailwind CSS 4 · Radix UI · shadcn/ui · Lucide · Sonner
+
+**Backend**
+- tRPC 11 (end-to-end type-safe API)
+- Prisma 6 + PostgreSQL (via Supabase)
+- NextAuth v5 (session-based auth)
+- Zod 4 validation · React Hook Form · TanStack Query
+
+**Infrastructure**
+- Supabase (Postgres + Auth + Storage)
+- Cloudflare Workers (via OpenNext + Wrangler)
+- Deployed with zero cold-starts on edge
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 20+
+- pnpm
+- A Supabase project
+
+### Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/kostasuser01gr/KinsenOPS-Platform
+cd KinsenOPS-Platform
+pnpm install
+cp .env.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Set these in `.env.local`:
+```env
+DATABASE_URL=your_supabase_postgres_connection_string
+DIRECT_URL=your_supabase_direct_url
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+AUTH_SECRET=your_nextauth_secret
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm prisma generate
+pnpm prisma db push
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open [http://localhost:3000](http://localhost:3000)
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+├── app/
+│   ├── (auth)/          # Login, register pages
+│   ├── (dashboard)/     # Protected app routes
+│   │   ├── analytics/
+│   │   ├── audit/
+│   │   ├── chat/
+│   │   ├── finance/
+│   │   ├── fleet/
+│   │   ├── incidents/
+│   │   ├── rentals/
+│   │   └── tasks/
+│   └── api/             # tRPC handler + auth endpoints
+├── components/          # Reusable UI components
+├── hooks/               # Custom React hooks
+├── lib/                 # tRPC client, Supabase client, utils
+└── server/              # tRPC routers, Prisma client
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
