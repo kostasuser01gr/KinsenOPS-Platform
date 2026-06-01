@@ -8,6 +8,7 @@ import { VEHICLE_STATUS_LABELS, VEHICLE_STATUS_COLORS } from "@/lib/vehicle-stat
 import { Car, FileText, ListTodo, AlertTriangle, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useRealtimeFleet, useRealtimeTasks, useRealtimeIncidents } from "@/hooks/use-realtime";
+import { RentalStatus, TaskStatus } from "@prisma/client";
 
 export default function DashboardPage() {
   useRealtimeFleet();
@@ -15,8 +16,8 @@ export default function DashboardPage() {
   useRealtimeIncidents();
 
   const { data: fleetSummary } = trpc.fleet.statusSummary.useQuery();
-  const { data: tasks } = trpc.task.list.useQuery({ status: "PENDING" as any, limit: 5 });
-  const { data: rentals } = trpc.rental.list.useQuery({ status: "ACTIVE" as any, limit: 5 });
+  const { data: tasks } = trpc.task.list.useQuery({ status: TaskStatus.PENDING, limit: 5 });
+  const { data: rentals } = trpc.rental.list.useQuery({ status: RentalStatus.ACTIVE, limit: 5 });
   const { data: incidents } = trpc.incident.list.useQuery({ limit: 5 });
 
   const totalVehicles = fleetSummary?.reduce((sum, s) => sum + s.count, 0) ?? 0;

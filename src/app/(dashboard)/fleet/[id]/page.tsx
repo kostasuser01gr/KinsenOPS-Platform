@@ -13,6 +13,7 @@ import { VEHICLE_STATUS_LABELS, VEHICLE_STATUS_COLORS, VEHICLE_STATUS_TRANSITION
 import { ArrowLeft, Clock, User } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { VehicleStatus } from "@prisma/client";
 
 export default function VehicleDetailPage() {
   const params = useParams();
@@ -106,7 +107,7 @@ export default function VehicleDetailPage() {
                   onClick={() =>
                     transitionMutation.mutate({
                       vehicleId: vehicle.id,
-                      toStatus: selectedStatus as any,
+                      toStatus: selectedStatus as VehicleStatus,
                     })
                   }
                 >

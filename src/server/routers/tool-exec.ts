@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { router, protectedProcedure } from "@/server/trpc";
 import "@/lib/tools/all-tools";
-import { getTool, listTools, parseSlashCommand } from "@/lib/tools/registry";
+import { getTool, listSlashCommands, listTools, parseSlashCommand } from "@/lib/tools/registry";
 import { hasPermission } from "@/lib/permissions";
 import type { Role } from "@prisma/client";
 
@@ -33,7 +33,6 @@ export const toolExecRouter = router({
   }),
 
   listSlashCommands: protectedProcedure.query(({ ctx }) => {
-    const { listSlashCommands } = require("@/lib/tools/registry");
     return listSlashCommands(ctx.user.role);
   }),
 

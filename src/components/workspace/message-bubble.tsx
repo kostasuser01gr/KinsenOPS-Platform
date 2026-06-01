@@ -2,16 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import {
-  Car,
-  ListTodo,
-  AlertTriangle,
-  DollarSign,
-  FileText,
-  BarChart3,
-  Wrench,
-  User as UserIcon,
-} from "lucide-react";
+import { Car, ListTodo, AlertTriangle, DollarSign, FileText, BarChart3, Wrench } from "lucide-react";
 
 interface MessageProps {
   role: string;
@@ -21,22 +12,18 @@ interface MessageProps {
   createdAt: string | Date;
 }
 
-const toolIcons: Record<string, typeof Car> = {
-  fleet: Car,
-  task: ListTodo,
-  incident: AlertTriangle,
-  finance: DollarSign,
-  rental: FileText,
-  analytics: BarChart3,
-};
-
-function getToolIcon(toolName: string) {
+function ToolIcon({ toolName }: { toolName: string }) {
   const category = toolName.split(".")[0];
-  return toolIcons[category] || Wrench;
+  if (category === "fleet") return <Car className="h-4 w-4 text-primary" />;
+  if (category === "task") return <ListTodo className="h-4 w-4 text-primary" />;
+  if (category === "incident") return <AlertTriangle className="h-4 w-4 text-primary" />;
+  if (category === "finance") return <DollarSign className="h-4 w-4 text-primary" />;
+  if (category === "rental") return <FileText className="h-4 w-4 text-primary" />;
+  if (category === "analytics") return <BarChart3 className="h-4 w-4 text-primary" />;
+  return <Wrench className="h-4 w-4 text-primary" />;
 }
 
 function ToolResultCard({ toolName, toolOutput }: { toolName: string; toolOutput: Record<string, unknown> }) {
-  const Icon = getToolIcon(toolName);
   const result = toolOutput as { success?: boolean; data?: unknown; displayMode?: string; title?: string };
   const displayMode = result.displayMode || "text";
 
@@ -44,7 +31,7 @@ function ToolResultCard({ toolName, toolOutput }: { toolName: string; toolOutput
     <div className="rounded-lg border bg-card shadow-sm overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-2 border-b bg-muted/50 px-3 py-2">
-        <Icon className="h-4 w-4 text-primary" />
+        <ToolIcon toolName={toolName} />
         <span className="text-sm font-medium">{result.title || toolName}</span>
         <Badge variant={result.success ? "default" : "destructive"} className="ml-auto text-[10px] px-1.5 py-0">
           {result.success ? "OK" : "ERROR"}

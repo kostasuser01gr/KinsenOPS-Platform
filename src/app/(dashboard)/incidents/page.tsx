@@ -23,6 +23,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useRealtimeIncidents } from "@/hooks/use-realtime";
+import { IncidentSeverity } from "@prisma/client";
 
 const SEVERITY_COLORS: Record<string, string> = {
   MINOR: "bg-yellow-100 text-yellow-700",
@@ -71,7 +72,7 @@ export default function IncidentsPage() {
               createIncident.mutate({
                 vehicleId: form.vehicleId,
                 branchId: session.user.branchId,
-                severity: form.severity as any,
+                severity: form.severity as IncidentSeverity,
                 description: form.description,
                 financialImpactEstimate: form.estimate ? parseFloat(form.estimate) : undefined,
               });

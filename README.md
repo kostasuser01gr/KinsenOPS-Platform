@@ -9,6 +9,8 @@
 
 Built with **Next.js 16**, **React 19**, **tRPC**, **Prisma**, and **Supabase**. This repo is kept local-first; hosted deployment is optional and requires explicit approval before any platform state is changed.
 
+**Portfolio review UX:** the root route is a public product overview, not a sign-in wall. Protected dashboards still require authentication.
+
 ---
 
 ## Features

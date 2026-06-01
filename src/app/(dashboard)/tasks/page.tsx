@@ -22,6 +22,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useRealtimeTasks } from "@/hooks/use-realtime";
+import { TaskPriority, TaskStatus } from "@prisma/client";
 
 const PRIORITY_COLORS: Record<string, string> = {
   LOW: "bg-gray-100 text-gray-700",
@@ -46,7 +47,7 @@ export default function TasksPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [form, setForm] = useState({ title: "", type: "general", description: "", priority: "MEDIUM", dueAt: "" });
 
-  const statusParam = statusFilter === "active" ? undefined : statusFilter !== "all" ? statusFilter as any : undefined;
+  const statusParam = statusFilter === "active" ? undefined : statusFilter !== "all" ? statusFilter as TaskStatus : undefined;
   const utils = trpc.useUtils();
 
   const { data, isLoading } = trpc.task.list.useQuery({ status: statusParam, page, limit: 20 });
@@ -86,7 +87,7 @@ export default function TasksPage() {
                 title: form.title,
                 type: form.type,
                 description: form.description || undefined,
-                priority: form.priority as any,
+                priority: form.priority as TaskPriority,
                 dueAt: form.dueAt ? new Date(form.dueAt).toISOString() : undefined,
                 branchId: session.user.branchId,
               });
@@ -192,10 +193,10 @@ export default function TasksPage() {
                     <TableCell><Badge variant="secondary" className={STATUS_COLORS[t.status]}>{t.status.replace("_", " ")}</Badge></TableCell>
                     <TableCell>
                       {t.status === "PENDING" && (
-                        <Button variant="ghost" size="sm" onClick={() => updateStatus.mutate({ id: t.id, status: "IN_PROGRESS" as any })}>Start</Button>
+                        <Button variant="ghost" size="sm" onClick={() => updateStatus.mutate({ id: t.id, status: TaskStatus.IN_PROGRESS })}>Start</Button>
                       )}
                       {t.status === "IN_PROGRESS" && (
-                        <Button variant="ghost" size="sm" onClick={() => updateStatus.mutate({ id: t.id, status: "COMPLETED" as any })}>Complete</Button>
+                        <Button variant="ghost" size="sm" onClick={() => updateStatus.mutate({ id: t.id, status: TaskStatus.COMPLETED })}>Complete</Button>
                       )}
                     </TableCell>
                   </TableRow>

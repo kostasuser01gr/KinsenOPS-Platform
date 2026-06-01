@@ -24,6 +24,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useRealtimeFleet } from "@/hooks/use-realtime";
+import { VehicleClass, VehicleStatus } from "@prisma/client";
 
 export default function FleetPage() {
   useRealtimeFleet();
@@ -39,7 +40,7 @@ export default function FleetPage() {
 
   const { data, isLoading } = trpc.fleet.list.useQuery({
     search: search || undefined,
-    status: statusFilter !== "all" ? (statusFilter as any) : undefined,
+    status: statusFilter !== "all" ? (statusFilter as VehicleStatus) : undefined,
     page,
     limit: 20,
   });
@@ -79,7 +80,7 @@ export default function FleetPage() {
                 make: form.make,
                 model: form.model,
                 year: parseInt(form.year),
-                class: form.class as any,
+                class: form.class as VehicleClass,
                 color: form.color || undefined,
                 mileage: parseInt(form.mileage) || 0,
                 notes: form.notes || undefined,

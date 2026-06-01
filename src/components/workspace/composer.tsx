@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
@@ -89,14 +89,6 @@ export function Composer({ conversationId, onMessageSent, shortcuts }: ComposerP
     }
     return map;
   }, [shortcuts, conversationId, userRole]);
-
-  useEffect(() => {
-    if (input === "/") {
-      setShowCommands(true);
-    } else if (!input.startsWith("/")) {
-      setShowCommands(false);
-    }
-  }, [input]);
 
   async function handleSend() {
     const text = input.trim();
@@ -278,7 +270,15 @@ export function Composer({ conversationId, onMessageSent, shortcuts }: ComposerP
           <Textarea
             ref={textareaRef}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => {
+              const nextInput = e.target.value;
+              setInput(nextInput);
+              if (nextInput === "/") {
+                setShowCommands(true);
+              } else if (!nextInput.startsWith("/")) {
+                setShowCommands(false);
+              }
+            }}
             onKeyDown={handleKeyDown}
             placeholder="Type a message or / for commands..."
             className="min-h-[40px] max-h-[120px] resize-none"
