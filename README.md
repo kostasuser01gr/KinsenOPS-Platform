@@ -116,3 +116,19 @@ src/
 ## License
 
 MIT
+
+---
+
+## Author
+
+**Konstantinos Foskolakis**
+Full-stack engineer — Heraklion, Crete, Greece
+[github.com/kostasuser01gr](https://github.com/kostasuser01gr)
+
+---
+
+## Portfolio Positioning
+
+This project demonstrates full-stack Next.js platform architecture at production depth: tRPC for end-to-end type-safe APIs, Prisma with Supabase PostgreSQL for data persistence, NextAuth v5 for session management, and Cloudflare Workers for edge deployment. The eight operational modules — fleet, rentals, finance, analytics, tasks, incidents, AI chat, and dashboard — are not feature stubs; they represent a complete operational domain model for a rental business. The public portfolio overview route ensures the deployment is accessible without auth, which is a deliberate UX decision for portfolio reviewers. The CI pipeline validates type safety and build integrity on every commit.
+
+*Built as a portfolio-grade full-stack operations intelligence platform. Estimated implementation effort for the current public version: 6–10 focused development days.*
